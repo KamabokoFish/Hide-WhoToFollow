@@ -41,7 +41,6 @@
         }
         nextSibling = nextSibling.nextElementSibling;
       }
-      console.log(count);
     } catch (error) {
       console.log(error);
     }
