@@ -1,7 +1,7 @@
 
 ## Hide 'who-to-follow'
 
-タイムライン上に時折表示される「おすすめアカウント」セクションを、(ページを遷移した後、初回の描画範囲内限定で)非表示にするChrome拡張です
+タイムライン上に時折表示される「おすすめアカウント」セクションを非表示にするChrome拡張です
 
 ### 導入手順
 
@@ -23,7 +23,7 @@ Google Chromeの拡張機能管理ページを開き、右上のトグルから�
 
 ## Hide 'who-to-follow'
 
-This is a Chrome extension that hides the "Who to follow" section on the timeline (limited to the initial rendering range within the page after transitioning).
+This is a Chrome extension that hides the "Who to follow" section on the timeline.
 
 ### Installation Steps
 
