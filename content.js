@@ -1,8 +1,18 @@
 {
   const targetText = 'Who to follow';
 
+  let lastCheckTime = 0;
+  let lastElement = null;
+  const CACHE_DURATION = 1000;
+
   //'who-to-follow'セクションを取得する
   function getRecommendElement() {
+    let now = Date.now();
+
+    if (lastElement && now - lastCheckTime < CACHE_DURATION) {
+      return;
+    }
+
     const divs = document.querySelectorAll(`div[data-testid="cellInnerDiv"]`);
     // テキスト内容で要素をフィルタリング
     const targetElement = Array.from(divs).find((div) => {
@@ -11,6 +21,10 @@
         return true;
       }
     });
+
+    lastCheckTime = now;
+    lastElement = targetElement;
+
     return targetElement;
   }
 
@@ -52,6 +66,8 @@
     const config = {
       childList: true,
       subtree: true,
+      attributes: false,
+      characterData: false,
     };
 
     const observer = new MutationObserver((mutations) => {
