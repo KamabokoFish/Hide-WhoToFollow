@@ -1,36 +1,74 @@
-//React経由でDOMが構築されきってから処理するために、少し遅延させる
-//TODO:他に良い方法ある？
-setTimeout(() => {
-  const targetText = "Who to follow";
-  const divElements = document.querySelectorAll("div[dir='ltr']");
+{
+  const targetText = 'Who to follow';
 
-  let targetDiv = null;
-
-  for (let div of divElements) {
-    const span = div.querySelector("span");
-    if (span && span.textContent.trim() === targetText) {
-      targetDiv = div; //who to followの文言を含むdiv要素を格納(基準となるdiv要素)
-      break;
-    }
-  }
-
-  if (targetDiv) {
-    
-    const parentDiv = targetDiv.closest("div[data-testid='cellInnerDiv']");
-
-    // parentDivと連続する4つの後続するdiv要素を非表示
-    parentDiv.style.display = "none";
-
-    let count = 0;
-    let nextSibling = parentDiv.nextElementSibling;
-
-    while (nextSibling && count < 4) {
-      if (nextSibling.tagName === "DIV") {
-        // nextSibling.classList.add("hide-recommend");
-        nextSibling.style.display = "none";
-        count++;
+  //'who-to-follow'セクションを取得する
+  function getRecommendElement() {
+    const divs = document.querySelectorAll(`div[data-testid="cellInnerDiv"]`);
+    // テキスト内容で要素をフィルタリング
+    const targetElement = Array.from(divs).find((div) => {
+      if (div.textContent === targetText) {
+        //targetTextが中に含まれている要素のときはtrueを返して格納
+        return true;
       }
-      nextSibling = nextSibling.nextElementSibling;
+    });
+    return targetElement;
+  }
+
+  function hideRecommend() {
+    const recommendSection = getRecommendElement();
+
+    if (!recommendSection) return;
+
+    try {
+      // 親要素を取得して非表示化
+      const parentDiv = recommendSection.closest(
+        'div[data-testid="cellInnerDiv"]'
+      );
+      if (!parentDiv) return;
+
+      parentDiv.style.display = 'none';
+
+      // 関連する要素も非表示化
+      let count = 0;
+      const MAX_ELEMENTS = 4;
+
+      let nextSibling = parentDiv.nextElementSibling;
+
+      while (nextSibling && count < MAX_ELEMENTS) {
+        if (nextSibling.tagName === 'DIV') {
+          nextSibling.style.display = 'none';
+          count++;
+        }
+        nextSibling = nextSibling.nextElementSibling;
+      }
+      console.log(count);
+    } catch (error) {
+      console.log(error);
     }
   }
-}, 1750);
+
+  // DOMの変更を監視するMutationObserverを設定
+  function observeDOM() {
+    const targetNode = document.body;
+    const config = {
+      childList: true,
+      subtree: true,
+    };
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length) {
+          hideRecommend();
+        }
+      }
+    });
+
+    try {
+      observer.observe(targetNode, config);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  observeDOM();
+}
