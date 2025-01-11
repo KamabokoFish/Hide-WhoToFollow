@@ -3,29 +3,34 @@
 
   let lastCheckTime = 0;
   let lastElement = null;
-  const CACHE_DURATION = 1000;
+  const CACHE_DURATION = 500;
 
   //'who-to-follow'セクションを取得する
   function getRecommendElement() {
     let now = Date.now();
 
-    if (lastElement && now - lastCheckTime < CACHE_DURATION) {
-      return;
-    }
+    if (lastElement && now - lastCheckTime < CACHE_DURATION) return;
 
-    const divs = document.querySelectorAll(`div[data-testid="cellInnerDiv"]`);
-    // テキスト内容で要素をフィルタリング
-    const targetElement = Array.from(divs).find((div) => {
-      if (div.textContent === targetText) {
-        //targetTextが中に含まれている要素のときはtrueを返して格納
-        return true;
+    try {
+      const divs = document.querySelectorAll(`div[data-testid="cellInnerDiv"]`);
+      // テキスト内容で要素をフィルタリング
+      const targetElement = Array.from(divs).find((div) => {
+        if (div.textContent === targetText) {
+          //targetTextが中に含まれている要素のときはtrueを返して格納
+          return true;
+        }
+      });
+
+      if (targetElement) {
+        //取得できたときだけキャッシュしておく
+        lastElement = targetElement;
       }
-    });
+      lastCheckTime = now;
 
-    lastCheckTime = now;
-    lastElement = targetElement;
-
-    return targetElement;
+      return targetElement;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function hideRecommend() {
