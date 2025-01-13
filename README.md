@@ -1,6 +1,9 @@
 
 ## Hide 'who-to-follow'
 
+<img width="430" alt="スクリーンショット 2025-01-14 1 20 22" src="https://github.com/user-attachments/assets/e2b673ee-37c7-4e37-9ba8-810598cc0e59" />
+
+
 タイムライン上に時折表示される「おすすめアカウント」セクションを非表示にするChrome拡張です
 
 ### 導入手順
