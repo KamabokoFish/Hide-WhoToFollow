@@ -4,6 +4,7 @@
   let lastCheckTime = 0;
   let lastElement = null;
   const CACHE_DURATION = 500;
+  const MAX_ELEMENTS = 4;
 
   //'who-to-follow'セクションを取得する
   function getRecommendElement() {
@@ -49,7 +50,6 @@
 
       // 関連する要素も非表示化
       let count = 0;
-      const MAX_ELEMENTS = 4;
 
       let nextSibling = parentDiv.nextElementSibling;
 
